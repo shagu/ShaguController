@@ -1,0 +1,7 @@
+## Interface: 11200
+## Title: |cffffcc00Shagu|cffffffffController
+## Author: Shagu
+## Notes: Adds a basic controller compatible UI and bindings
+## Version: GIT
+
+ShaguController.lua
