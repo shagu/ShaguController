@@ -2,10 +2,10 @@
 -- Gosip Register for Keys
 -- Space (A) accept, E (B) cancel
 
+local core = {}
 local _G = _G or getfenv(0)
 BINDING_HEADER_SHAGUCONTROL = "ShaguController Custom Buttons"
-
-local core = {}
+ShaguControllerConfig = {}
 
 core.keybinds = CreateFrame("Frame")
 core.keybinds:RegisterEvent("PLAYER_LOGIN")

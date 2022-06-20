@@ -2,6 +2,7 @@
 ## Title: |cffffcc00Shagu|cffffffffController
 ## Author: Shagu
 ## Notes: Adds a basic controller compatible UI and bindings
+## SavedVariablesPerCharacter: ShaguControllerConfig
 ## Version: GIT
 
 ShaguController.lua
