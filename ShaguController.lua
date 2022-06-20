@@ -34,7 +34,7 @@ core.keybinds:SetScript("OnEvent", function()
     SaveBindings(GetCurrentBindingSet())
 
     -- notify the player for keybind changes
-    DEFAULT_CHAT_FRAME:AddMessage("|cffffcc00Shagu|cffffffffController: Initialized Keybinds")  
+    DEFAULT_CHAT_FRAME:AddMessage("|cffffcc00Shagu|cffffffffController: Initialized Keybinds")
   elseif event == "PLAYER_LOGOUT" and core.previous_bindings then
     SaveBindings(core.keybinds.previous_bindings)
     DEFAULT_CHAT_FRAME:AddMessage("|cffffcc00Shagu|cffffffffController: Old Keybinds Restored")
@@ -52,14 +52,14 @@ core.loot:SetScript("OnUpdate", function()
 	for i = 1, LOOTFRAME_NUMBUTTONS, 1 do
 		local button = getglobal("LootButton"..i)
 		if button:IsVisible() then
-		
+
 		  if core.loot.last_button ~= button then
 		    local button_offset = (i-1) * button:GetHeight()
     	  LootFrame:ClearAllPoints()
 	    	LootFrame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x - 40, y + 100 + button_offset)
 	    	core.loot.last_button = button
 	    end
-	   
+
 		  return
 		end
 	end
@@ -81,11 +81,11 @@ core.ui.resizes = {
   MainMenuBar, MainMenuExpBar, MainMenuBarMaxLevelBar,
   ReputationWatchBar, ReputationWatchStatusBar,
 }
-    
+
 core.ui.frames = {
   ShapeshiftBarLeft, ShapeshiftBarMiddle, ShapeshiftBarRight,
 }
-      
+
 core.ui.textures = {
   MainMenuBarTexture0, MainMenuBarTexture1,
   MainMenuXPBarTexture0, MainMenuXPBarTexture3,
@@ -114,22 +114,22 @@ core.ui.hide = function(self, frame, texture)
     frame:Hide()
   end
 end
-    
+
 core.ui.manage_button = function(self, frame, pos, x, y, image)
   -- set button scale and set position
   frame:SetScale(1.2)
   frame:ClearAllPoints()
   frame:SetPoint("CENTER", UIParent, pos, x, y)
-  
+
   -- hide keybind text
   _G[frame:GetName().."HotKey"]:Hide()
-  
+
   -- add keybind icon
   if not frame.keybind_icon then
     frame.keybind_icon = CreateFrame("Frame", nil, frame)
     frame.keybind_icon:SetFrameLevel(255)
     frame.keybind_icon:SetAllPoints(frame)
-      
+
     frame.keybind_icon.tex = frame.keybind_icon:CreateTexture(nil, "OVERLAY")
     frame.keybind_icon.tex:SetTexture(image)
     frame.keybind_icon.tex:SetPoint("TOPRIGHT", frame.keybind_icon, "TOPRIGHT", 0, 0)
@@ -141,54 +141,85 @@ end
 core.ui.manage_positions = function(a1, a2, a3)
   -- run original function first
   core.ui.manage_positions_hook(a1, a2, a3)
-    
+
   -- right action buttons
   core.ui:manage_button(ActionButton1, "BOTTOMRIGHT", -220, 135, "Interface\\AddOns\\ShaguController\\img\\y")
   core.ui:manage_button(ActionButton2, "BOTTOMRIGHT", -265,  90, "Interface\\AddOns\\ShaguController\\img\\x")
   core.ui:manage_button(ActionButton3, "BOTTOMRIGHT", -220,  45, "Interface\\AddOns\\ShaguController\\img\\a")
   core.ui:manage_button(ActionButton4, "BOTTOMRIGHT", -175,  90, "Interface\\AddOns\\ShaguController\\img\\b")
-  
+
   -- left action buttons
   core.ui:manage_button(ActionButton5, "BOTTOMLEFT", 220, 135, "Interface\\AddOns\\ShaguController\\img\\up")
   core.ui:manage_button(ActionButton6, "BOTTOMLEFT", 265,  90, "Interface\\AddOns\\ShaguController\\img\\right")
   core.ui:manage_button(ActionButton7, "BOTTOMLEFT", 220,  45, "Interface\\AddOns\\ShaguController\\img\\down")
   core.ui:manage_button(ActionButton8, "BOTTOMLEFT", 175,  90, "Interface\\AddOns\\ShaguController\\img\\left")
-  
+
   -- replace button 3 with jump icon
   ActionButton3Icon:SetTexture("Interface\\Icons\\inv_gizmo_rocketboot_01")
   ActionButton3Icon.SetTexture = function() return end
-  
+
   ActionButton3Name:SetPoint("BOTTOM", 0, 5)
   ActionButton3Name:SetText("Jump")
   ActionButton3Name.SetText = function() return end
-  
+
   ActionButton3:Show()
   ActionButton3.Hide = function() return end
-  
+
   ActionButton3Icon:Show()
   ActionButton3Icon.Hide = function() return end
- 
+
   -- move and resize chat
-  local anchor = MainMenuBarArtFrame
-  anchor = MultiBarBottomLeft:IsVisible() and MultiBarBottomLeft or anchor
-  anchor = MultiBarBottomRight:IsVisible() and MultiBarBottomRight or anchor
-  anchor = ShapeshiftBarFrame:IsVisible() and ShapeshiftBarFrame or anchor
-  anchor = PetActionBarFrame:IsVisible() and PetActionBarFrame or anchor
-  
-  ChatFrame1:ClearAllPoints()
-  ChatFrame1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 17, 13)
-  ChatFrame1:SetPoint("BOTTOMRIGHT", anchor, "TOPRIGHT", -17, 13)
-  ChatFrame1:SetPoint("TOP", UIParent, "CENTER", 0, -200)
-  
+  ChatFrameEditBox:ClearAllPoints()
+  ChatFrameEditBox:SetPoint("TOP", UIParent, "TOP", 0, -10)
+  ChatFrameEditBox:SetWidth(300)
+  ChatFrameEditBox:SetScale(2)
+
+  -- on-screen keyboard helper
+  ChatFrame1.oskHelper = ChatFrame1.oskHelper or CreateFrame("Button", nil, UIParent)
+  ChatFrame1.oskHelper:SetFrameStrata("BACKGROUND")
+  ChatFrame1.oskHelper:SetAllPoints(ChatFrame1)
+  ChatFrame1.oskHelper:SetScript("OnClick", function()
+    ChatFrameEditBox:Show()
+    ChatFrameEditBox:Raise()
+  end)
+
+  ChatFrame1.oskHelper:SetScript("OnUpdate", function()
+    if ChatFrameEditBox:IsVisible() and this.state ~= 1 then
+      ChatFrame1:SetScale(2)
+      ChatFrame1:ClearAllPoints()
+      ChatFrame1:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0)
+      ChatFrame1:SetPoint("BOTTOMRIGHT", UIParent, "RIGHT", 0, 0)
+      this.state = 1
+    elseif not ChatFrameEditBox:IsVisible() and this.state ~= 0 then
+      local anchor = MainMenuBarArtFrame
+      anchor = MultiBarBottomLeft:IsVisible() and MultiBarBottomLeft or anchor
+      anchor = MultiBarBottomRight:IsVisible() and MultiBarBottomRight or anchor
+      anchor = ShapeshiftBarFrame:IsVisible() and ShapeshiftBarFrame or anchor
+      anchor = PetActionBarFrame:IsVisible() and PetActionBarFrame or anchor
+
+      ChatFrame1:SetScale(1)
+      ChatFrame1:ClearAllPoints()
+      ChatFrame1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 17, 13)
+      ChatFrame1:SetPoint("BOTTOMRIGHT", anchor, "TOPRIGHT", -17, 13)
+      ChatFrame1:SetPoint("TOP", UIParent, "CENTER", 0, -200)
+      this.state = 0
+    end
+  end)
+
   -- move and hide some chat buttons
-  ChatFrame1DownButton:ClearAllPoints()
-  ChatFrame1DownButton:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 0, -5)
-  
-  ChatFrame1UpButton:ClearAllPoints()
-  ChatFrame1UpButton:SetPoint("RIGHT", ChatFrame1DownButton, "LEFT", 0, 0)
-  
   ChatFrameMenuButton:Hide()
-  ChatFrame1BottomButton:Hide()
+  ChatFrameMenuButton.Show = function() return end
+
+  for i=1, NUM_CHAT_WINDOWS do
+    _G["ChatFrame"..i.."DownButton"]:ClearAllPoints()
+    _G["ChatFrame"..i.."DownButton"]:SetPoint("BOTTOMRIGHT", _G["ChatFrame"..i], "BOTTOMRIGHT", 0, -5)
+
+    _G["ChatFrame"..i.."UpButton"]:ClearAllPoints()
+    _G["ChatFrame"..i.."UpButton"]:SetPoint("RIGHT", _G["ChatFrame"..i.."DownButton"], "LEFT", 0, 0)
+
+    _G["ChatFrame"..i.."BottomButton"]:Hide()
+    _G["ChatFrame"..i.."BottomButton"].Show = function() return end
+  end
 
   -- move pet action bar
   local anchor = MainMenuBarArtFrame
@@ -197,21 +228,21 @@ core.ui.manage_positions = function(a1, a2, a3)
   anchor = ShapeshiftBarFrame:IsVisible() and ShapeshiftBarFrame or anchor
   PetActionBarFrame:ClearAllPoints()
   PetActionBarFrame:SetPoint("BOTTOM", anchor, "TOP", 0, 3)
-  
+
   -- move shapeshift bar
   local anchor = MainMenuBarArtFrame
   anchor = MultiBarBottomLeft:IsVisible() and MultiBarBottomLeft or anchor
   anchor = MultiBarBottomRight:IsVisible() and MultiBarBottomRight or anchor
   ShapeshiftBarFrame:ClearAllPoints()
   ShapeshiftBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, 10)
-  
+
   -- move normal action bars
   MultiBarBottomLeft:ClearAllPoints()
   MultiBarBottomLeft:SetPoint("BOTTOM", MainMenuBar, "TOP", 0, 20)
-    
+
   MultiBarBottomRight:ClearAllPoints()
   MultiBarBottomRight:SetPoint("BOTTOM", MultiBarBottomLeft, "TOP", 0, 5)
-  
+
   -- move elements for reduced actionbar size
   MainMenuMaxLevelBar0:SetPoint("LEFT", MainMenuBarArtFrame, "LEFT")
   MainMenuBarTexture2:SetPoint("LEFT", MainMenuBarArtFrame, "LEFT")
@@ -224,21 +255,21 @@ core.ui.manage_positions = function(a1, a2, a3)
 
   MainMenuBarLeftEndCap:SetPoint("RIGHT", MainMenuBarArtFrame, "LEFT", 30, 0)
   MainMenuBarRightEndCap:SetPoint("LEFT", MainMenuBarArtFrame, "RIGHT", -30, 0)
-  
+
   -- move pfQuest arrow if existing
   if pfQuest and pfQuest.route and pfQuest.route.arrow then
     pfQuest.route.arrow:SetPoint("CENTER", 0, -120)
   end
-  
+
   -- reduce actionbar size
   for id, frame in pairs(core.ui.resizes) do frame:SetWidth(488) end
-  
+
   -- hide reduced frames
   for id, frame in pairs(core.ui.frames) do core.ui:hide(frame) end
 
   -- clear reduced textures
   for id, frame in pairs(core.ui.textures) do core.ui:hide(frame, 1) end
-  
+
   -- clear some button textures
   for id, frame in pairs(core.ui.normtextures) do core.ui:hide(frame, 2) end
 end
