@@ -179,8 +179,12 @@ core.ui.manage_positions = function(a1, a2, a3)
   ChatFrame1.oskHelper:SetFrameStrata("BACKGROUND")
   ChatFrame1.oskHelper:SetAllPoints(ChatFrame1)
   ChatFrame1.oskHelper:SetScript("OnClick", function()
-    ChatFrameEditBox:Show()
-    ChatFrameEditBox:Raise()
+    if not ChatFrameEditBox:IsVisible() then
+      ChatFrameEditBox:Show()
+      ChatFrameEditBox:Raise()
+    else
+      ChatFrameEditBox:Hide()
+    end
   end)
 
   ChatFrame1.oskHelper:SetScript("OnUpdate", function()
