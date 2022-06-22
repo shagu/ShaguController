@@ -7,7 +7,6 @@ local resizes = {
 
 local frames = {
   ShapeshiftBarLeft, ShapeshiftBarMiddle, ShapeshiftBarRight,
-  -- ExhaustionTick, ExhaustionLevelFillBar,
 }
 
 local textures = {
