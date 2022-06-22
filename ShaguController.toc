@@ -5,4 +5,8 @@
 ## SavedVariablesPerCharacter: ShaguControllerConfig
 ## Version: GIT
 
-ShaguController.lua
+core.lua
+
+keybinds.lua
+loot.lua
+ui.lua

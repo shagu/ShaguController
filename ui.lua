@@ -1,107 +1,31 @@
--- TODO
--- Gosip Register for Keys
--- Space (A) accept, E (B) cancel
-
-local core = {}
 local _G = _G or getfenv(0)
-BINDING_HEADER_SHAGUCONTROL = "ShaguController Custom Buttons"
-ShaguControllerConfig = {}
 
-core.keybinds = CreateFrame("Frame")
-core.keybinds:RegisterEvent("PLAYER_LOGIN")
-core.keybinds:RegisterEvent("PLAYER_LOGOUT")
-core.keybinds:SetScript("OnEvent", function()
-  if event == "PLAYER_LOGIN" then
-    -- save previous keybinds
-    core.keybinds.previous_bindings = GetCurrentBindingSet()
-
-    -- overwrite keybindings on login
-    SetBinding("TAB", "TOGGLEWORLDMAP")                 -- Window (TabKey)
-    SetBinding("1", "SHAGUCONTROL1")                    -- Trackpad-Up: Inventory + Character
-    SetBinding("2", "SHAGUCONTROL2")                    -- Trackpad-Right: QuestLog
-    SetBinding("3", "SHAGUCONTROL3")                    -- Trackpad-Down: Talents & Social
-    SetBinding("4", "SHAGUCONTROL4")                    -- Trackpad-Left: Spellbook
-    SetBinding("MOUSEWHEELDOWN", "TARGETPREVIOUSENEMY") -- L1
-    SetBinding("MOUSEWHEELUP", "TARGETNEARESTENEMY")    -- R1
-    SetBinding("F", "ACTIONBUTTON1")                    -- Y
-    SetBinding("R", "ACTIONBUTTON2")                    -- X
-    SetBinding("E", "ACTIONBUTTON4")                    -- B
-    -- Jump                                             -- A
-    SetBinding("UP", "ACTIONBUTTON5")                   -- Arrow-Up
-    SetBinding("RIGHT", "ACTIONBUTTON6")                -- Arrow-Right
-    SetBinding("DOWN", "ACTIONBUTTON7")                 -- Arrow-Down
-    SetBinding("LEFT", "ACTIONBUTTON8")                 -- Arrow-Down
-    SaveBindings(GetCurrentBindingSet())
-
-    -- notify the player for keybind changes
-    DEFAULT_CHAT_FRAME:AddMessage("|cffffcc00Shagu|cffffffffController: Initialized Keybinds")
-  elseif event == "PLAYER_LOGOUT" and core.previous_bindings then
-    SaveBindings(core.keybinds.previous_bindings)
-    DEFAULT_CHAT_FRAME:AddMessage("|cffffcc00Shagu|cffffffffController: Old Keybinds Restored")
-  end
-end)
-
-core.loot = CreateFrame("Frame", "ShaguControllerLoot", LootFrame)
-core.loot:SetScript("OnUpdate", function()
-  if GetNumLootItems() == 0 then HideUIPanel(LootFrame) return end
-
-  local x, y = GetCursorPosition()
-	local s = LootFrame:GetEffectiveScale()
-	x, y  = x / s, y / s
-
-	for i = 1, LOOTFRAME_NUMBUTTONS, 1 do
-		local button = getglobal("LootButton"..i)
-		if button:IsVisible() then
-
-		  if core.loot.last_button ~= button then
-		    local button_offset = (i-1) * button:GetHeight()
-    	  LootFrame:ClearAllPoints()
-	    	LootFrame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x - 40, y + 100 + button_offset)
-	    	core.loot.last_button = button
-	    end
-
-		  return
-		end
-	end
-end)
-
-core.loot:SetScript("OnShow", function()
-  core.loot.last_button = nil
-end)
-
-core.ui = CreateFrame("Frame", "ShaguControllerUI", UIParent)
-core.ui:RegisterEvent("PLAYER_ENTERING_WORLD")
-core.ui:SetScript("OnEvent", function()
-  -- update ui when frame positions get managed
-  core.ui.manage_positions_hook = UIParent_ManageFramePositions
-  UIParent_ManageFramePositions = core.ui.manage_positions
-end)
-
-core.ui.resizes = {
+local resizes = {
   MainMenuBar, MainMenuExpBar, MainMenuBarMaxLevelBar,
   ReputationWatchBar, ReputationWatchStatusBar,
 }
 
-core.ui.frames = {
+local frames = {
   ShapeshiftBarLeft, ShapeshiftBarMiddle, ShapeshiftBarRight,
+  -- ExhaustionTick, ExhaustionLevelFillBar,
 }
 
-core.ui.textures = {
+local textures = {
   MainMenuBarTexture0, MainMenuBarTexture1,
-  MainMenuXPBarTexture0, MainMenuXPBarTexture3,
+  MainMenuXPBarTexture2, MainMenuXPBarTexture3,
   ReputationWatchBarTexture2, ReputationWatchBarTexture3,
   ReputationXPBarTexture2, ReputationXPBarTexture3,
   SlidingActionBarTexture0, SlidingActionBarTexture1,
 }
 
-core.ui.normtextures = {
+local normtextures = {
   ShapeshiftButton1, ShapeshiftButton2,
   ShapeshiftButton3, ShapeshiftButton4,
   ShapeshiftButton5, ShapeshiftButton6,
 }
 
 -- general function to hide textures and frames
-core.ui.hide = function(self, frame, texture)
+local function hide(frame, texture)
   if not frame then return end
 
   if texture and texture == 1 and frame.SetTexture then
@@ -115,7 +39,27 @@ core.ui.hide = function(self, frame, texture)
   end
 end
 
-core.ui.manage_button = function(self, frame, pos, x, y, image)
+-- reduce actionbar size
+for id, frame in pairs(resizes) do frame:SetWidth(488) end
+
+  -- hide reduced frames
+for id, frame in pairs(frames) do hide(frame) end
+
+-- clear reduced textures
+for id, frame in pairs(textures) do hide(frame, 1) end
+
+-- clear some button textures
+for id, frame in pairs(normtextures) do hide(frame, 2) end
+
+local ui = CreateFrame("Frame", "ShaguControllerUI", UIParent)
+ui:RegisterEvent("PLAYER_ENTERING_WORLD")
+ui:SetScript("OnEvent", function()
+  -- update ui when frame positions get managed
+  ui.manage_positions_hook = UIParent_ManageFramePositions
+  UIParent_ManageFramePositions = ui.manage_positions
+end)
+
+ui.manage_button = function(self, frame, pos, x, y, image)
   -- set button scale and set position
   frame:SetScale(1.2)
   frame:ClearAllPoints()
@@ -138,21 +82,21 @@ core.ui.manage_button = function(self, frame, pos, x, y, image)
   end
 end
 
-core.ui.manage_positions = function(a1, a2, a3)
+ui.manage_positions = function(a1, a2, a3)
   -- run original function first
-  core.ui.manage_positions_hook(a1, a2, a3)
+  ui.manage_positions_hook(a1, a2, a3)
 
   -- right action buttons
-  core.ui:manage_button(ActionButton1, "BOTTOMRIGHT", -220, 135, "Interface\\AddOns\\ShaguController\\img\\y")
-  core.ui:manage_button(ActionButton2, "BOTTOMRIGHT", -265,  90, "Interface\\AddOns\\ShaguController\\img\\x")
-  core.ui:manage_button(ActionButton3, "BOTTOMRIGHT", -220,  45, "Interface\\AddOns\\ShaguController\\img\\a")
-  core.ui:manage_button(ActionButton4, "BOTTOMRIGHT", -175,  90, "Interface\\AddOns\\ShaguController\\img\\b")
+  ui:manage_button(ActionButton1, "BOTTOMRIGHT", -220, 135, "Interface\\AddOns\\ShaguController\\img\\y")
+  ui:manage_button(ActionButton2, "BOTTOMRIGHT", -265,  90, "Interface\\AddOns\\ShaguController\\img\\x")
+  ui:manage_button(ActionButton3, "BOTTOMRIGHT", -220,  45, "Interface\\AddOns\\ShaguController\\img\\a")
+  ui:manage_button(ActionButton4, "BOTTOMRIGHT", -175,  90, "Interface\\AddOns\\ShaguController\\img\\b")
 
   -- left action buttons
-  core.ui:manage_button(ActionButton5, "BOTTOMLEFT", 220, 135, "Interface\\AddOns\\ShaguController\\img\\up")
-  core.ui:manage_button(ActionButton6, "BOTTOMLEFT", 265,  90, "Interface\\AddOns\\ShaguController\\img\\right")
-  core.ui:manage_button(ActionButton7, "BOTTOMLEFT", 220,  45, "Interface\\AddOns\\ShaguController\\img\\down")
-  core.ui:manage_button(ActionButton8, "BOTTOMLEFT", 175,  90, "Interface\\AddOns\\ShaguController\\img\\left")
+  ui:manage_button(ActionButton5, "BOTTOMLEFT", 220, 135, "Interface\\AddOns\\ShaguController\\img\\up")
+  ui:manage_button(ActionButton6, "BOTTOMLEFT", 265,  90, "Interface\\AddOns\\ShaguController\\img\\right")
+  ui:manage_button(ActionButton7, "BOTTOMLEFT", 220,  45, "Interface\\AddOns\\ShaguController\\img\\down")
+  ui:manage_button(ActionButton8, "BOTTOMLEFT", 175,  90, "Interface\\AddOns\\ShaguController\\img\\left")
 
   -- replace button 3 with jump icon
   ActionButton3Icon:SetTexture("Interface\\Icons\\inv_gizmo_rocketboot_01")
@@ -247,6 +191,15 @@ core.ui.manage_positions = function(a1, a2, a3)
   MultiBarBottomRight:ClearAllPoints()
   MultiBarBottomRight:SetPoint("BOTTOM", MultiBarBottomLeft, "TOP", 0, 5)
 
+  -- experience bar
+  MainMenuXPBarTexture0:SetPoint("LEFT", MainMenuExpBar, "LEFT")
+  MainMenuXPBarTexture1:SetPoint("RIGHT", MainMenuExpBar, "RIGHT")
+
+  -- reputation bar
+  ReputationWatchBar:SetPoint("BOTTOM", MainMenuExpBar, "TOP", 0, 0)
+  ReputationWatchBarTexture0:SetPoint("LEFT", ReputationWatchBar, "LEFT")
+  ReputationWatchBarTexture1:SetPoint("RIGHT", ReputationWatchBar, "RIGHT")
+
   -- move elements for reduced actionbar size
   MainMenuMaxLevelBar0:SetPoint("LEFT", MainMenuBarArtFrame, "LEFT")
   MainMenuBarTexture2:SetPoint("LEFT", MainMenuBarArtFrame, "LEFT")
@@ -264,16 +217,7 @@ core.ui.manage_positions = function(a1, a2, a3)
   if pfQuest and pfQuest.route and pfQuest.route.arrow then
     pfQuest.route.arrow:SetPoint("CENTER", 0, -120)
   end
-
-  -- reduce actionbar size
-  for id, frame in pairs(core.ui.resizes) do frame:SetWidth(488) end
-
-  -- hide reduced frames
-  for id, frame in pairs(core.ui.frames) do core.ui:hide(frame) end
-
-  -- clear reduced textures
-  for id, frame in pairs(core.ui.textures) do core.ui:hide(frame, 1) end
-
-  -- clear some button textures
-  for id, frame in pairs(core.ui.normtextures) do core.ui:hide(frame, 2) end
 end
+
+-- save to main frame
+ShaguController.ui = ui
