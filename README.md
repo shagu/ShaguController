@@ -9,28 +9,28 @@ A World of Warcraft (1.12) addon that enhances the default user interface to be 
 
 ## Keybinding
 
-The addon sets keybinds based on the buttons mappings provided by SteamDeck's 'Keyboard (WASD) and Mouse' layout:
+The addon sets in-game keybinds based on the button mappings provided by SteamDeck's "Keyboard (WASD) and Mouse"-Layout:
 ![Mapping](screenshots/mapping.jpg)
 
-* The A button will be used to jump
-* The Y, B and X buttons are bound to the 3 actionbuttons on the right side
-* The left DPad is bound to the 4 actionbuttons on the left side
-* The L1 and R1 buttons are used for next-target and previous-target
+* The A button is bound to jump
+* The Y, B and X buttons are bound to the 3 action buttons on the right side
+* The D-Pad is bound to the 4 action buttons on the left side
+* The L1 and R1 buttons are used for next-target and previous-target selection
 * The "Tab Key" opens the world map
-* The "Left Trackpad" is used to:
-  - Up: Toggle Inventory and Player Frame
-  - Right: Toggle Questlog
-  - Down: Toggle Friendlist
-  - Left: Toggle Spellbook
+* The "Left Trackpad" is bound to:
+  - Up: Toggle bags and inventory
+  - Right: Toggle quest log
+  - Down: Toggle friend list
+  - Left: Toggle spell book
 
 ## UI Changes
 
-* The actionbar size is reduced and got all action buttons removed, to have only the
+* The action bar size is reduced and got all action buttons removed, to have only the
 bag buttons and the micro panel left.
 * The normal action buttons are moved to the left and the right side
 to match the gamepad layout.
-* Action buttons got their keybinds replaced by the gamepad button icons.
-* Out-of-Range actions will be displayed as a gray-scaled action.
+* Action buttons got their keybinds replaced by gamepad button icons.
+* Out-of-Range actions will be displayed as a gray-scaled texture.
 * The loot window is automatically positioned to have the most relevant part of it under your cursor.
 * The chat window is attached to the main actionbar and got buttons removed.
 * Clicking on the chat window will zoom and move it to make space for the onscreen keyboard.
@@ -43,6 +43,7 @@ to match the gamepad layout.
 
 # Play on SteamDeck
 
+*Prerequisite: You already have the game copied over to the steamdeck.*
 Enter the Desktop Mode, navigate to your World of Warcraft directory and install the add-on as usual:
 
     cd Interface/AddOns
@@ -61,3 +62,5 @@ Find the "AutoLogin.exe" in your Steam Library and right click -> Properties.
   - account: your account name
   - password: your account password
   - 1000: the delay it waits before entering your credentials
+
+You can now launch the game from within the SteamDeck UI and it will automatically log you in.
