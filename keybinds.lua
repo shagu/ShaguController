@@ -26,7 +26,7 @@ keybinds:SetScript("OnEvent", function()
 
     -- notify the player for keybind changes
     DEFAULT_CHAT_FRAME:AddMessage("|cffffcc00Shagu|cffffffffController: Initialized Keybinds")
-  elseif event == "PLAYER_LOGOUT" and core.previous_bindings then
+  elseif event == "PLAYER_LOGOUT" and keybinds.previous_bindings then
     SaveBindings(keybinds.previous_bindings)
     DEFAULT_CHAT_FRAME:AddMessage("|cffffcc00Shagu|cffffffffController: Old Keybinds Restored")
   end
