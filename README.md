@@ -43,7 +43,8 @@ to match the gamepad layout.
 
 # Play on SteamDeck
 
-*Prerequisite: You already have the game copied over to the steamdeck.*
+> Prerequisite: You already have the game copied over to the steamdeck.
+
 Enter the Desktop Mode, navigate to your World of Warcraft directory and install the add-on as usual:
 
     cd Interface/AddOns
