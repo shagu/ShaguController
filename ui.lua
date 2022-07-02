@@ -57,6 +57,7 @@ ui:SetScript("OnEvent", function()
   -- update ui when frame positions get managed
   ui.manage_positions_hook = UIParent_ManageFramePositions
   UIParent_ManageFramePositions = ui.manage_positions
+  ui:UnregisterAllEvents()
 end)
 
 ui.manage_button = function(self, frame, pos, x, y, image)
