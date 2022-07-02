@@ -80,6 +80,17 @@ ui.manage_button = function(self, frame, pos, x, y, image)
     frame.keybind_icon.tex:SetPoint("TOPRIGHT", frame.keybind_icon, "TOPRIGHT", 0, 0)
     frame.keybind_icon.tex:SetWidth(16)
     frame.keybind_icon.tex:SetHeight(16)
+
+    -- handle out of range as desaturation of keybind and icon
+    _G[frame:GetName().."HotKey"].SetVertexColor = function(self, r, g, b, a)
+      if r == 1.0 and g == 0.1 and b == 0.1 then
+        _G[frame:GetName().."Icon"]:SetDesaturated(true)
+        frame.keybind_icon.tex:SetDesaturated(true)
+      else
+        _G[frame:GetName().."Icon"]:SetDesaturated(false)
+        frame.keybind_icon.tex:SetDesaturated(false)
+      end
+    end
   end
 end
 
