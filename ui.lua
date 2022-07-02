@@ -1,5 +1,8 @@
 local _G = _G or getfenv(0)
 
+-- use outline on chat by default
+ChatFontNormal:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
+
 local resizes = {
   MainMenuBar, MainMenuExpBar, MainMenuBarMaxLevelBar,
   ReputationWatchBar, ReputationWatchStatusBar,
@@ -147,7 +150,7 @@ local buttonmap = {
 
    -- This is my personal preference where the last 3 buttons of an actionbar
    -- are usually mapped and mandatory skills for me. If you want to continue
-   -- the line, change this to 7,8,9 and change the disabled ones to 10, 11, 12.
+   -- the line, change this to 7,8,9 and change the disabled ones to 10,11,12.
    -- also make sure to update the keybinds.lua accordingly.
    { 10, "BOTTOMLEFT", 265,  90, "Interface\\AddOns\\ShaguController\\img\\right" },
    { 11, "BOTTOMLEFT", 220,  45, "Interface\\AddOns\\ShaguController\\img\\down" },
@@ -195,7 +198,11 @@ ui.manage_positions = function(a1, a2, a3)
       ChatFrame1:SetScale(2)
       ChatFrame1:ClearAllPoints()
       ChatFrame1:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0)
-      ChatFrame1:SetPoint("BOTTOMRIGHT", UIParent, "RIGHT", 0, 0)
+      ChatFrame1:SetPoint("BOTTOMRIGHT", UIParent, "RIGHT", 0, -14)
+
+      FCF_SetWindowColor(ChatFrame1, 0,0,0)
+      FCF_SetWindowAlpha(ChatFrame1, .5)
+
       this.state = 1
     elseif not ChatFrameEditBox:IsVisible() and this.state ~= 0 then
       local anchor = MainMenuBarArtFrame
@@ -208,8 +215,12 @@ ui.manage_positions = function(a1, a2, a3)
       ChatFrame1:ClearAllPoints()
       ChatFrame1:SetPoint("LEFT", MultiBarBottomLeft, "LEFT", 17, 0)
       ChatFrame1:SetPoint("RIGHT", MultiBarBottomLeft, "RIGHT", -17, 0)
-      ChatFrame1:SetPoint("BOTTOM", anchor, "TOP", 0, 4)
+      ChatFrame1:SetPoint("BOTTOM", anchor, "TOP", 0, 13)
       ChatFrame1:SetPoint("TOP", UIParent, "CENTER", 0, -200)
+
+      FCF_SetWindowColor(ChatFrame1, 0,0,0)
+      FCF_SetWindowAlpha(ChatFrame1, 0)
+
       this.state = 0
     end
   end)
