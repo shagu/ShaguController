@@ -147,8 +147,9 @@ ui.manage_positions = function(a1, a2, a3)
 
       ChatFrame1:SetScale(1)
       ChatFrame1:ClearAllPoints()
-      ChatFrame1:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 17, 13)
-      ChatFrame1:SetPoint("BOTTOMRIGHT", anchor, "TOPRIGHT", -17, 13)
+      ChatFrame1:SetPoint("LEFT", MultiBarBottomLeft, "LEFT", 17, 0)
+      ChatFrame1:SetPoint("RIGHT", MultiBarBottomLeft, "RIGHT", -17, 0)
+      ChatFrame1:SetPoint("BOTTOM", anchor, "TOP", 0, 4)
       ChatFrame1:SetPoint("TOP", UIParent, "CENTER", 0, -200)
       this.state = 0
     end
