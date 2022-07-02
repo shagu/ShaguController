@@ -242,7 +242,7 @@ ui.manage_positions = function(a1, a2, a3)
   anchor = MultiBarBottomLeft:IsVisible() and MultiBarBottomLeft or anchor
   anchor = MultiBarBottomRight:IsVisible() and MultiBarBottomRight or anchor
   ShapeshiftBarFrame:ClearAllPoints()
-  ShapeshiftBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, 10)
+  ShapeshiftBarFrame:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 15, -5)
 
   -- move normal action bars
   MultiBarBottomLeft:ClearAllPoints()
