@@ -7,6 +7,7 @@ local resizes = {
 
 local frames = {
   ShapeshiftBarLeft, ShapeshiftBarMiddle, ShapeshiftBarRight,
+  MainMenuMaxLevelBar2, MainMenuMaxLevelBar3,
 }
 
 local textures = {
