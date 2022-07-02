@@ -6,6 +6,7 @@ local resizes = {
 }
 
 local frames = {
+  BonusActionBarTexture0, BonusActionBarTexture1,
   ShapeshiftBarLeft, ShapeshiftBarMiddle, ShapeshiftBarRight,
   MainMenuMaxLevelBar2, MainMenuMaxLevelBar3,
 }
