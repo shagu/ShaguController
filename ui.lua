@@ -1,8 +1,5 @@
 local _G = _G or getfenv(0)
 
--- use outline on chat by default
-ChatFontNormal:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
-
 local resizes = {
   MainMenuBar, MainMenuExpBar, MainMenuBarMaxLevelBar,
   ReputationWatchBar, ReputationWatchStatusBar,
