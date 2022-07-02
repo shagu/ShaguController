@@ -16,12 +16,12 @@ keybinds:SetScript("OnEvent", function()
     SetBinding("MOUSEWHEELUP", "TARGETNEARESTENEMY")    -- R1
     SetBinding("F", "ACTIONBUTTON1")                    -- Y
     SetBinding("R", "ACTIONBUTTON2")                    -- X
-    SetBinding("E", "ACTIONBUTTON4")                    -- B
+    SetBinding("E", "ACTIONBUTTON3")                    -- B
     -- Jump                                             -- A
     SetBinding("UP", "ACTIONBUTTON5")                   -- Arrow-Up
-    SetBinding("RIGHT", "ACTIONBUTTON6")                -- Arrow-Right
-    SetBinding("DOWN", "ACTIONBUTTON7")                 -- Arrow-Down
-    SetBinding("LEFT", "ACTIONBUTTON8")                 -- Arrow-Down
+    SetBinding("RIGHT", "ACTIONBUTTON10")               -- Arrow-Right
+    SetBinding("DOWN", "ACTIONBUTTON11")                -- Arrow-Down
+    SetBinding("LEFT", "ACTIONBUTTON12")                -- Arrow-Down
     SaveBindings(GetCurrentBindingSet())
 
     -- notify the player for keybind changes
