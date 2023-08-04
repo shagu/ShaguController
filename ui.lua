@@ -43,7 +43,7 @@ end
 -- reduce actionbar size
 for id, frame in pairs(resizes) do frame:SetWidth(488) end
 
-  -- hide reduced frames
+-- hide reduced frames
 for id, frame in pairs(frames) do hide(frame) end
 
 -- clear reduced textures
@@ -51,9 +51,6 @@ for id, frame in pairs(textures) do hide(frame, 1) end
 
 -- clear some button textures
 for id, frame in pairs(normtextures) do hide(frame, 2) end
-
--- create a jump button
-ActionButtonJmp = CreateFrame("CheckButton", "ActionButtonJmp", MainMenuBarArtFrame, "ActionButtonTemplate")
 
 local ui = CreateFrame("Frame", "ShaguControllerUI", UIParent)
 ui:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -113,50 +110,24 @@ ui.manage_button = function(self, frame, pos, x, y, image)
   end
 end
 
-ui.manage_jump_button = function(self, frame)
-  local icon = _G[frame:GetName().."Icon"]
-  local name = _G[frame:GetName().."Name"]
-
-  icon:Show()
-  icon:SetTexture("Interface\\Icons\\inv_gizmo_rocketboot_01")
-  icon.SetTexture = function() return end
-  icon.Hide = function() return end
-
-  name:SetPoint("BOTTOM", 0, 5)
-  name:SetText("Jump")
-  name.SetText = function() return end
-
-  frame:Show()
-  frame.Hide = function() return end
-  frame.GetID = function() return 0 end
-end
-
 local buttonmap = {
-   -- dummy jump button
-   { ActionButtonJmp, "BOTTOMRIGHT", -220,  45, "Interface\\AddOns\\ShaguController\\img\\a" },
-
    -- right controls
-   { 1, "BOTTOMRIGHT", -220, 135, "Interface\\AddOns\\ShaguController\\img\\y" },
-   { 2, "BOTTOMRIGHT", -265,  90, "Interface\\AddOns\\ShaguController\\img\\x" },
+   { 2, "BOTTOMRIGHT", -220,  45, "Interface\\AddOns\\ShaguController\\img\\a" },
+   { 5, "BOTTOMRIGHT", -220, 135, "Interface\\AddOns\\ShaguController\\img\\y" },
+   { 4, "BOTTOMRIGHT", -265,  90, "Interface\\AddOns\\ShaguController\\img\\x" },
    { 3, "BOTTOMRIGHT", -175,  90, "Interface\\AddOns\\ShaguController\\img\\b" },
-   { 4, "BOTTOMRIGHT", -220,  90, "" },
+   { 1, "BOTTOMRIGHT", -220,  90, "" }, --R1
 
    -- left controls
-   { 5, "BOTTOMLEFT",  220, 135, "Interface\\AddOns\\ShaguController\\img\\up" },
-   { 6, "BOTTOMLEFT",  220,  90, "" },
-
-   -- This is my personal preference where the last 3 buttons of an actionbar
-   -- are usually mapped and mandatory skills for me. If you want to continue
-   -- the line, change this to 7,8,9 and change the disabled ones to 10,11,12.
-   -- also make sure to update the keybinds.lua accordingly.
-   { 10, "BOTTOMLEFT", 265,  90, "Interface\\AddOns\\ShaguController\\img\\right" },
-   { 11, "BOTTOMLEFT", 220,  45, "Interface\\AddOns\\ShaguController\\img\\down" },
-   { 12, "BOTTOMLEFT", 175,  90, "Interface\\AddOns\\ShaguController\\img\\left" },
-
-   -- disabled
-   { 7, "DISABLED" },
-   { 8, "DISABLED" },
-   { 9, "DISABLED" },
+   { 7, "BOTTOMLEFT",  220,  45, "Interface\\AddOns\\ShaguController\\img\\down" },
+   { 10, "BOTTOMLEFT",  220, 135, "Interface\\AddOns\\ShaguController\\img\\up" },
+   { 8, "BOTTOMLEFT",  265,  90, "Interface\\AddOns\\ShaguController\\img\\right" },
+   { 9, "BOTTOMLEFT", 175,  90, "Interface\\AddOns\\ShaguController\\img\\left" },
+   { 6, "BOTTOMLEFT",  220,  90, "" }, --L1
+   
+   -- Disabled
+   { 11, "DISABLED" },
+   { 12, "DISABLED" },
 }
 
 ui.manage_positions = function(a1, a2, a3)
@@ -167,9 +138,6 @@ ui.manage_positions = function(a1, a2, a3)
   for id, button in pairs(buttonmap) do
     ui:manage_button(unpack(button))
   end
-
-  -- skin jump button
-  ui:manage_jump_button(ActionButtonJmp)
 
   -- move and resize chat
   ChatFrameEditBox:ClearAllPoints()
