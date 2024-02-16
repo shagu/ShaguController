@@ -7,6 +7,13 @@ A World of Warcraft (1.12) addon that enhances the default user interface to be 
 ![Overview](screenshots/overview.jpg)
 *(Addons used: ShaguController, ShaguTweaks, ShaguPlates, pfQuest)*
 
+## Installation (Vanilla, 1.12)
+1. Download **[Latest Version](https://github.com/shagu/ShaguController/archive/master.zip)**
+2. Unpack the Zip file
+3. Rename the folder "ShaguController-master" to "ShaguController"
+4. Copy "ShaguController" into Wow-Directory\Interface\AddOns
+5. Restart Wow
+
 ## Keybinding
 
 The addon sets in-game keybinds based on the button mappings provided by SteamDeck's "Keyboard (WASD) and Mouse"-Layout:
