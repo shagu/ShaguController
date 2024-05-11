@@ -64,6 +64,12 @@ ui:SetScript("OnEvent", function()
   ui:UnregisterAllEvents()
 end)
 
+ui:SetScript("OnUpdate", function()
+  -- update ui once the first frame is shown
+  UIParent_ManageFramePositions()
+  this:Hide()
+end)
+
 ui.manage_button = function(self, frame, pos, x, y, image)
   if frame and tonumber(frame) then
     self:manage_button(_G["ActionButton" .. frame], pos, x, y, image)
