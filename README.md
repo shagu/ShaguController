@@ -62,6 +62,9 @@ Open Steam Library and click on "[+] Add a Game" and select "Add a Non-Steam Gam
 Browse to your World of Warcraft Folder and select WoW.exe. Then choose "Add Selected Programs".
 Find the "WoW.exe" in your Steam Library and right click -> Properties. You can set the name there to: World of Warcraft
 
+Next, open the Steam Settings and navigate to "Steam Play". There you want to enable: "Enable Steam Play for all other titles".
+The preselected proton version should be fine. If something doesn't work or you have graphical glitches, try to select another version there.
+
 ## AutoLogin
 
 Entering an account and password on a Steam Deck can be a hassle. A client patch like [Turtle-Autologin](https://github.com/Haaxor1689/turtle-autologin) or
