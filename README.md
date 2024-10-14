@@ -58,17 +58,12 @@ Enter the Desktop Mode, navigate to your World of Warcraft directory and install
     git clone https://github.com/shagu/ShaguController
     cd -
 
-Now copy the `AutoLogin.exe` from the addon directory to the root folder of your game:
-
-    cp Interface/AddOns/ShaguController/autologin/AutoLogin.exe .
-
 Open Steam Library and click on "[+] Add a Game" and select "Add a Non-Steam Game...".
-Browse to your World of Warcraft Folder and select AutoLogin.exe. Then choose "Add Selected Programs".
-Find the "AutoLogin.exe" in your Steam Library and right click -> Properties.
-* Set the name to: World of Warcraft
-* Set the launch options: `Wow.exe account password 1000 --proton`  
-  - account: your account name
-  - password: your account password
-  - 1000: the delay it waits before entering your credentials
+Browse to your World of Warcraft Folder and select WoW.exe. Then choose "Add Selected Programs".
+Find the "WoW.exe" in your Steam Library and right click -> Properties. You can set the name there to: World of Warcraft
 
-You can now launch the game from within the SteamDeck UI and it will automatically log you in.
+## AutoLogin
+
+Entering an account and password on a Steam Deck can be a hassle. A client patch like [Turtle-Autologin](https://github.com/Haaxor1689/turtle-autologin) or
+[Vanilla-Autologin](https://github.com/Haaxor1689/vanilla-autologin) can help by adding an account selection field to the login screen.
+Follow the install instructions there to get it running.
