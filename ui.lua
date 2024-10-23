@@ -70,10 +70,31 @@ ui:SetScript("OnUpdate", function()
   this:Hide()
 end)
 
-ui.manage_button = function(self, frame, pos, x, y, image)
+local actionhide = CreateFrame("Frame", "ShaguControllerActionHide", BonusActionBarFrame)
+actionhide.buttons = {}
+
+actionhide:SetScript("OnShow", function()
+  for button, bonus in pairs(this.buttons) do
+    if button:GetID() ~= 0 then
+      button:EnableMouse(bonus)
+      button:SetAlpha(bonus)
+    end
+  end
+end)
+
+actionhide:SetScript("OnHide", function()
+  for button, bonus in pairs(this.buttons) do
+    if button:GetID() ~= 0 then
+      button:EnableMouse(bonus == 0 and 1 or 0)
+      button:SetAlpha(bonus == 0 and 1 or 0)
+    end
+  end
+end)
+
+ui.manage_button = function(self, frame, pos, x, y, image, bonus)
   if frame and tonumber(frame) then
     self:manage_button(_G["ActionButton" .. frame], pos, x, y, image)
-    self:manage_button(_G["BonusActionButton" .. frame], pos, x, y, image)
+    self:manage_button(_G["BonusActionButton" .. frame], pos, x, y, image, true)
     return
   end
 
@@ -83,6 +104,9 @@ ui.manage_button = function(self, frame, pos, x, y, image)
     frame:Hide()
     return
   end
+
+  -- add button to actionhide registry
+  actionhide.buttons[frame] = bonus and 1 or 0
 
   -- set button scale and set position
   local scale = image == "" and 1 or 1.2
