@@ -7,6 +7,5 @@
 
 core.lua
 
-keybinds.lua
 loot.lua
 ui.lua
